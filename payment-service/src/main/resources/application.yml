@@ -1,0 +1,38 @@
+server:
+  port: 7172
+  servlet:
+    context-path: /api/ms-payment/v1
+
+spring:
+  application:
+    name: payment-service
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:paymentsdb}?useSSL=true
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+
+    database-platform: com.ab.saga.orderservice.infrastructure.hibernate.NoToastPostgresSQLDialect
+
+  rabbitmq:
+    host: ${RABBIT_MQ_HOST_NAME:localhost}
+    port: ${RABBIT_MQ_PORT:5672}
+    username: ${RABBIT_MQ_USER:guest}
+    password: ${RABBIT_MQ_PASSWORD:guest}
+    listener:
+      direct:
+        acknowledge-mode: manual
+
+amqp:
+  bindings:
+    -
+      exchange: saga.events
+      routingKey: saga.created
+      queue: order.saga
+
+  queues:
+    order_saga: order.saga
