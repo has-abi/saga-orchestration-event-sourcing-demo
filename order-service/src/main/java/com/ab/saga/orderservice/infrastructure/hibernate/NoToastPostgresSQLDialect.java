@@ -1,7 +1,6 @@
 package com.ab.saga.orderservice.infrastructure.hibernate;
 
 import org.hibernate.boot.model.TypeContributions;
-import org.hibernate.dialect.DatabaseVersion;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.SqlTypes;
@@ -12,23 +11,17 @@ import java.sql.Types;
 
 public class NoToastPostgresSQLDialect extends PostgreSQLDialect {
     public NoToastPostgresSQLDialect() {
-        super(DatabaseVersion.make(9, 5));
+        super();
     }
 
     @Override
     protected String columnType(int sqlTypeCode) {
-        if (sqlTypeCode == SqlTypes.BLOB) {
-            return "bytea";
-        }
-        return super.columnType(sqlTypeCode);
+        return sqlTypeCode == SqlTypes.BLOB ? "BYTEA" : super.columnType(sqlTypeCode);
     }
 
     @Override
     protected String castType(int sqlTypeCode) {
-        if (sqlTypeCode == SqlTypes.BLOB) {
-            return "bytea";
-        }
-        return super.castType(sqlTypeCode);
+        return sqlTypeCode == SqlTypes.BLOB ? "BYTEA" : super.castType(sqlTypeCode);
     }
 
     @Override

@@ -4,9 +4,4 @@
             <column name="serializedSaga" column-definition="BYTEA"></column>
         </attribute-override>
     </entity>
-    <entity class="org.axonframework.eventhandling.tokenstore.jpa.TokenEntry">
-        <attribute-override name="token">
-            <column name="token" column-definition="BYTEA"></column>
-        </attribute-override>
-    </entity>
 </entity-mappings>

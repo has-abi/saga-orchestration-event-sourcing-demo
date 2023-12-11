@@ -4,7 +4,6 @@ import com.ab.commonapi.commands.CreateOrderCommand;
 import com.ab.commonapi.events.OrderCreatedEvent;
 import com.ab.saga.orderservice.application.dto.OrderRequestDto;
 import com.ab.saga.orderservice.application.dto.OrderResponseDto;
-import com.ab.saga.orderservice.application.mapper.OrderMapper;
 import com.ab.saga.orderservice.domain.entity.Order;
 import com.ab.saga.orderservice.domain.repository.OrderRepository;
 import lombok.AllArgsConstructor;
@@ -22,7 +21,6 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private final OrderMapper orderMapper;
     private final OrderRepository orderRepository;
     private final CommandGateway commandGateway;
     private final QueryUpdateEmitter queryUpdateEmitter;
@@ -35,7 +33,11 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(orderCreatedEvent.getOrderStatus());
         Order savedOrder = orderRepository.save(order);
 
-        return orderMapper.orderToOrderResponseDto(savedOrder);
+        return OrderResponseDto.builder()
+                .orderId(savedOrder.getId())
+                .userId(savedOrder.getUserId())
+                .orderStatus(savedOrder.getOrderStatus())
+                .build();
     }
 
     @Override

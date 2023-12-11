@@ -16,8 +16,7 @@ import java.math.BigDecimal;
 @Aggregate
 public class OrderAggregate {
     @AggregateIdentifier
-    private String aggregateId;
-    private Long orderId;
+    private String orderId;
     private Long userId;
     private BigDecimal amount;
     private OrderStatus orderStatus;
@@ -39,7 +38,7 @@ public class OrderAggregate {
     public void on(OrderCreatedEvent orderCreatedEvent) {
         log.info("OrderCreatedEvent occurred");
 
-        this.aggregateId = orderCreatedEvent.getId();
+        this.orderId = orderCreatedEvent.getId();
         this.userId = orderCreatedEvent.getUserId();
         this.amount = orderCreatedEvent.getAmount();
         this.orderStatus = orderCreatedEvent.getOrderStatus();

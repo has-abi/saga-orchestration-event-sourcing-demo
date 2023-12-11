@@ -16,7 +16,7 @@ spring:
     hibernate:
       ddl-auto: update
 
-    database-platform: com.ab.saga.orderservice.infrastructure.hibernateNoToastPostgresSQLDialect
+    database-platform: com.ab.saga.orderservice.infrastructure.hibernate.NoToastPostgresSQLDialect
 
   rabbitmq:
     host: ${RABBIT_MQ_HOST_NAME:localhost}
@@ -30,27 +30,9 @@ spring:
 amqp:
   bindings:
     -
-      exchange: order.events
-      routingKey: order.created
-      queue: order.created.payment-service
-
-    -
-      exchange: payment.events
-      routingKey: payment.failed
-      queue: payment.failed.order-service
-
-    -
-      exchange: shipment.events
-      routingKey: shipment.completed
-      queue: shipment.completed.order-service
+      exchange: saga.events
+      routingKey: saga.created
+      queue: order.saga
 
   queues:
-    order_created: order.created.payment-service
-    payment_failed: payment.failed.order-service
-    shipment_completed: shipment.completed.order-service
-
-  routingKey:
-    order_created_events: order.created
-
-  exchange:
-    order_events: order.events
+    order_saga: order.saga

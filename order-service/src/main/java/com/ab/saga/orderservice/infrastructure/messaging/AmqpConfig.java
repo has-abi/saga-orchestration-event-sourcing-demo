@@ -63,7 +63,7 @@ public class AmqpConfig {
     public SpringAMQPMessageSource myQueueMessageSource(AMQPMessageConverter messageConverter) {
         return new SpringAMQPMessageSource(messageConverter) {
 
-            @RabbitListener(queues = "myQueue")
+            @RabbitListener(queues = "${amqp.queues.order_saga}")
             @Override
             public void onMessage(Message message, Channel channel) {
                 super.onMessage(message, channel);
