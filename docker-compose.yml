@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:13.1
+    container_name: postgres_saga
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_MULTIPLE_DATABASES: ordersdb, paymentsdb, shipmentsdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data_vol:/var/lib/postgresql/data
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+
+  rabbitMQ:
+    image: rabbitmq:3.12.8-management
+    container_name: rabbit-saga
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+volumes:
+  postgres_data_vol:

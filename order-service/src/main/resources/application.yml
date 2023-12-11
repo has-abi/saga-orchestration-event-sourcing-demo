@@ -1,0 +1,56 @@
+server:
+  port: 7171
+  servlet:
+    context-path: /api/ms-order/v1
+
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:ordersdb}?useSSL=true
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+
+    database-platform: com.ab.saga.orderservice.infrastructure.hibernateNoToastPostgresSQLDialect
+
+  rabbitmq:
+    host: ${RABBIT_MQ_HOST_NAME:localhost}
+    port: ${RABBIT_MQ_PORT:5672}
+    username: ${RABBIT_MQ_USER:guest}
+    password: ${RABBIT_MQ_PASSWORD:guest}
+    listener:
+      direct:
+        acknowledge-mode: manual
+
+amqp:
+  bindings:
+    -
+      exchange: order.events
+      routingKey: order.created
+      queue: order.created.payment-service
+
+    -
+      exchange: payment.events
+      routingKey: payment.failed
+      queue: payment.failed.order-service
+
+    -
+      exchange: shipment.events
+      routingKey: shipment.completed
+      queue: shipment.completed.order-service
+
+  queues:
+    order_created: order.created.payment-service
+    payment_failed: payment.failed.order-service
+    shipment_completed: shipment.completed.order-service
+
+  routingKey:
+    order_created_events: order.created
+
+  exchange:
+    order_events: order.events
