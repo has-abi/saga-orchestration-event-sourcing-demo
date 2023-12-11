@@ -3,7 +3,7 @@ version: "3.8"
 services:
   postgres:
     image: postgres:13.1
-    container_name: postgres_saga
+    container_name: postgres_cqrs_saga
     environment:
       POSTGRES_DB: postgres
       POSTGRES_MULTIPLE_DATABASES: ordersdb, paymentsdb, shipmentsdb
@@ -17,7 +17,7 @@ services:
 
   rabbitMQ:
     image: rabbitmq:3.12.8-management
-    container_name: rabbit-saga
+    container_name: rabbit-cqrs-saga
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
