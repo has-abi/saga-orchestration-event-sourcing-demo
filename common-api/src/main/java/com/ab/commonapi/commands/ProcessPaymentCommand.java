@@ -5,15 +5,13 @@ import lombok.Getter;
 import java.math.BigDecimal;
 
 @Getter
-public class ProcessPaymentCommand extends BaseCommand<String>{
+public class ProcessPaymentCommand extends BaseCommand<Long> {
 
-    private final Long userId;
-    private final Long orderId;
+    private final String orderId;
     private final BigDecimal amount;
 
-    public ProcessPaymentCommand(String id, Long userId, Long orderId, BigDecimal amount) {
+    public ProcessPaymentCommand(Long id, String orderId, BigDecimal amount) {
         super(id);
-        this.userId = userId;
         this.orderId = orderId;
         this.amount = amount;
     }
