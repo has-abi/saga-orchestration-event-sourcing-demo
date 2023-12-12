@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderResponseDto {
     private Long orderId;
-    private Long userId;
+    private String userId;
     private OrderStatus orderStatus;
 }

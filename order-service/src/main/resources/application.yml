@@ -27,12 +27,19 @@ spring:
       direct:
         acknowledge-mode: manual
 
+axon:
+  amqp:
+    exchange: events
+    transaction-mode: publisher_ack
+  eventhandling:
+    processors:
+      name:
+        source: axonQueueMessageSource
+
+
 amqp:
   bindings:
     -
-      exchange: saga.events
-      routingKey: saga.created
-      queue: order.saga
-
-  queues:
-    order_saga: order.saga
+      exchange: events
+      routingKey: "*.*"
+      queue: events

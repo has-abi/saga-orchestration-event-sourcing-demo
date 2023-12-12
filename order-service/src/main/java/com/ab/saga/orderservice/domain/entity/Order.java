@@ -16,7 +16,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
+    private String userId;
     private BigDecimal amount;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;

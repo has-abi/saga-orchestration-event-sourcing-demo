@@ -3,6 +3,7 @@ package com.ab.saga.orderservice.infrastructure.messaging;
 import com.rabbitmq.client.Channel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.axonframework.extensions.amqp.eventhandling.AMQPMessageConverter;
 import org.axonframework.extensions.amqp.eventhandling.spring.SpringAMQPMessageSource;
 import org.springframework.amqp.core.*;
@@ -10,6 +11,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+@Slf4j
 @Getter
 @Setter
 @Configuration
@@ -36,7 +39,7 @@ public class AmqpConfig {
     @Bean
     public Declarables exchanges() {
         return new Declarables(bindings.stream()
-                .map(binding -> new DirectExchange(binding.getExchange())).toArray(Exchange[]::new));
+                .map(binding -> new FanoutExchange(binding.getExchange())).toArray(Exchange[]::new));
     }
 
     @Bean
@@ -59,13 +62,15 @@ public class AmqpConfig {
         return rabbitTemplate;
     }
 
+    @Qualifier("axonQueueMessageSource")
     @Bean
-    public SpringAMQPMessageSource myQueueMessageSource(AMQPMessageConverter messageConverter) {
+    public SpringAMQPMessageSource axonQueueMessageSource(AMQPMessageConverter messageConverter) {
         return new SpringAMQPMessageSource(messageConverter) {
 
-            @RabbitListener(queues = "${amqp.queues.order_saga}")
+            @RabbitListener(queues = "events")
             @Override
             public void onMessage(Message message, Channel channel) {
+                log.info("Received Message");
                 super.onMessage(message, channel);
             }
         };

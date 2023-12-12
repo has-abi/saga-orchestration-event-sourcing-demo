@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 public class OrderAggregate {
     @AggregateIdentifier
     private String orderId;
-    private Long userId;
+    private String userId;
     private BigDecimal amount;
     private OrderStatus orderStatus;
 

@@ -10,6 +10,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderRequestDto {
-    private Long userId;
+    private String userId;
     private BigDecimal amount;
 }

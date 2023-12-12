@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @Aggregate
 public class PaymentAggregate {
     @AggregateIdentifier
-    private Long userId;
+    private String userId;
     private String orderId;
     private BigDecimal balance;
     private PaymentStatus paymentStatus;
@@ -30,7 +30,7 @@ public class PaymentAggregate {
 
     @CommandHandler
     public PaymentAggregate(CreateUserBalanceCommand balanceCommand) {
-        log.info("ProcessPaymentCommand received");
+        log.info("CreateUserBalanceCommand received");
         if (balanceCommand.getAmount().doubleValue() < 0) {
             throw new RuntimeException("Negative amount");
         }
@@ -42,6 +42,7 @@ public class PaymentAggregate {
     @EventSourcingHandler
     public void on(UserBalanceCreatedEvent userBalanceCreatedEvent) {
         log.info("UserBalanceCreatedEvent occurred");
+        this.userId = userBalanceCreatedEvent.getId();
         this.balance = userBalanceCreatedEvent.getAmount();
     }
 

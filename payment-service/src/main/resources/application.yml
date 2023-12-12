@@ -16,7 +16,7 @@ spring:
     hibernate:
       ddl-auto: update
 
-    database-platform: com.ab.saga.orderservice.infrastructure.hibernate.NoToastPostgresSQLDialect
+    database-platform: com.ab.saga.paymentservice.infrastructure.hibernate.NoToastPostgresSQLDialect
 
   rabbitmq:
     host: ${RABBIT_MQ_HOST_NAME:localhost}
@@ -27,12 +27,16 @@ spring:
       direct:
         acknowledge-mode: manual
 
+axon:
+  amqp:
+    exchange: events
+  eventhandling:
+    processors:
+      name:
+        source: axonQueueMessageSour
 amqp:
   bindings:
     -
-      exchange: saga.events
-      routingKey: saga.created
-      queue: order.saga
-
-  queues:
-    order_saga: order.saga
+      exchange: events
+      routingKey: "*.*"
+      queue: events
