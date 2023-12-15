@@ -18,7 +18,8 @@
 Using Api Gateway: http://localhost:5555/docs
 
 ## Test cases
-1. First Create a User Balance with balance 5000 for example:
+
+First Create a User Balance with balance 5000 for example:
 
 ![Create user balance](create_user_balance.png)
 
