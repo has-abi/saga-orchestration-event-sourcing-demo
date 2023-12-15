@@ -29,7 +29,7 @@ Copy the returned user id for order creation
 
 Create order with an amount less than user balance: 200 for example.
 
-2. Create order
+Create new order
 
 ![Create new order](create_new_order.png)
 
