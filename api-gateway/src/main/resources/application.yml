@@ -1,0 +1,48 @@
+server:
+  port: ${SERVER_PORT:5555}
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_HOST_URL:localhost}:${EUREKA_PORT:3999}/eureka
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      routes:
+        - id: order-service
+          uri: lb://${ORDER_SERVICE_HOST_NAME:order-service}
+          predicates:
+            - Path=/api/ms-order/v1/**
+
+        - id: payment-service
+          uri: lb://${PAYMENT_SERVICE_HOST_NAME:payment-service}
+          predicates:
+            - Path=/api/ms-payment/v1/**
+
+        - id: shipment-service
+          uri: lb://${SHIPMENT_SERVICE_HOST_NAME:shipment-service}
+          predicates:
+            - Path=/api/ms-shipment/v1/**
+
+
+springdoc:
+  swagger-ui:
+    path: /docs
+    urls:
+      - name: ms-order
+        url: http://${SERVER_URL:localhost}:${SERVER_PORT:5555}/api/ms-order/v1/v3/api-docs
+      - name: ms-payment
+        url: http://${SERVER_URL:localhost}:${SERVER_PORT:5555}/api/ms-payment/v1/v3/api-docs
+      - name: ms-shipment
+        url: http://${SERVER_URL:localhost}:${SERVER_PORT:5555}/api/ms-shipment/v1/v3/api-docs

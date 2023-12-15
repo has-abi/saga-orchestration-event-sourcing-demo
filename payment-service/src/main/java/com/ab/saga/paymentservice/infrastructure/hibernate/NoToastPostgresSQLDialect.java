@@ -31,4 +31,3 @@ public class NoToastPostgresSQLDialect extends PostgreSQLDialect {
         jdbcTypeRegistry.addDescriptor(Types.BLOB, BinaryJdbcType.INSTANCE);
     }
 }
-

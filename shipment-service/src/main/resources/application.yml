@@ -1,0 +1,35 @@
+server:
+  port: 7174
+  servlet:
+    context-path: /api/ms-shipment/v1
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_HOST_URL:localhost}:${EUREKA_PORT:3999}/eureka
+
+spring:
+  application:
+    name: shipment-service
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:shipmentsdb}?useSSL=true
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+
+    database-platform: com.ab.saga.shipmentservice.infrastructure.hibernate.NoToastPostgresSQLDialect
+
+axon:
+  axonserver:
+    enabled: true
+    context: default
+    component-name: shipment-service
+    servers: localhost:8124
+  serializer:
+    general: jackson
+    events: jackson
+    messages: jackson

@@ -15,15 +15,25 @@ services:
     ports:
       - "5432:5432"
 
-  rabbitMQ:
-    image: rabbitmq:3.12.8-management
-    container_name: rabbit-cqrs-saga
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
-    ports:
-      - "15672:15672"
-      - "5672:5672"
+  axon-server:
+      image: axoniq/axonserver:latest-jdk-17-dev
+      ports:
+        - "8024:8024"
+        - "8124:8124"
+      environment:
+        axoniq_axonserver_hostname: axon-server
+        axoniq_axonserver_autocluster_first: axon-server
+        axoniq_axonserver_autocluster_contexts: _admin,default
+
+      volumes:
+        - axon_data_vol:/axonserver/data
+        - axon_events_vol:/axonserver/events
+
 
 volumes:
   postgres_data_vol:
+    driver: local
+  axon_data_vol:
+    driver: local
+  axon_events_vol:
+    driver: local

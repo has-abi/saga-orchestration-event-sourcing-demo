@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: registry-service
+server:
+  port: ${SERVER_PORT:3999}
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false

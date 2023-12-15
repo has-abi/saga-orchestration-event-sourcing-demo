@@ -1,15 +1,8 @@
 package com.ab.commonapi.commands;
 
-import lombok.Getter;
+import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 import java.math.BigDecimal;
 
-@Getter
-public class CreateUserBalanceCommand extends BaseCommand<String> {
-    private final BigDecimal amount;
-
-    public CreateUserBalanceCommand(String id, BigDecimal amount) {
-        super(id);
-        this.amount = amount;
-    }
+public record CreateUserBalanceCommand(@TargetAggregateIdentifier String userId, BigDecimal amount) {
 }
